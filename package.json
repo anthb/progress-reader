@@ -1,0 +1,32 @@
+{
+  "name": "progress-reader",
+  "title": "Progress reader",
+  "description": "Display read progress of the current page",
+  "version": "0.0.1",
+  "author": {
+    "name": "Anthony Bordonaro",
+    "url": "http://anthb.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anthb/progress-reader"
+  },
+  "keywords": [
+    "javascript",
+    "percentage",
+    "read"
+  ],
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-coffee": "~0.11.1",
+    "grunt-contrib-jasmine": "~0.7.0",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "jquery": "~2.1.1"
+  }
+}

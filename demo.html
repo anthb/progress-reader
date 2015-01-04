@@ -1,0 +1,31 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Progress Reader | Demo</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        <p>Hello world! This is HTML5 Boilerplate.</p>
+
+        <div style="height: 1500px; background:#ebebeb"></div>
+        <div style="height: 1500px; background:#1B91DA"></div>
+
+        <div class="progress-reader" style="background:#000; color:#fff; position: fixed; bottom: 0; width: 100%; text-align:center;">
+            <p class="progress-reader__info">Page not read...</p>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="progress_reader.js"></script>
+        <script>
+            $("body").progressReader();
+        </script>
+    </body>
+</html>
