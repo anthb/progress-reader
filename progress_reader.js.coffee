@@ -38,11 +38,35 @@ ProgressReader::init = ->
 
 ProgressReader::scrollEvent = ( event ) ->
   # event.data.elementHeight
-  windowHeight = $(window).height()
-  currentPosition = (event.data.$element.scrollTop())
+  $window = $(window)
+  windowHeight = $(window).height() # height of screen
+  documentHeight = $(document).height() # height of entire document
 
-  progress = 100 * (currentPosition / (event.data.elementHeight - windowHeight))
-  $('.progress-reader__info').html(progress)
+  currentWindowPosition = $window.scrollTop()
+  elementOffsetTop = event.data.$element.offset().top
+  elementOffsetBottom = elementOffsetTop + event.data.elementHeight
+  #currentWindowPosition = (event.data.$element.scrollTop())
+
+  console.log(currentWindowPosition)
+  console.log(elementOffsetTop)
+  console.log('bottom: ' + elementOffsetBottom)
+  console.log(event.data.elementHeight)
+  console.log(windowHeight)
+  console.log(documentHeight)
+  console.log(elementOffsetTop + event.data.elementHeight)
+
+  # Inside the range (not upper limit, just lower)
+  if currentWindowPosition > elementOffsetTop
+
+    console.log( currentWindowPosition - elementOffsetTop)
+    console.log( if elementOffsetBottom == documentHeight then windowHeight else 0)
+    console.log(windowHeight)
+
+    #progress = 100 * ((currentWindowPosition - event.data.elementHeight) / (event.data.elementHeight - windowHeight))
+    progress = (100 * ((currentWindowPosition - elementOffsetTop) / (event.data.elementHeight - ( if elementOffsetBottom == documentHeight then windowHeight else 0 ))))
+    #progress = 
+    $('.progress-reader__info').html(progress)
+  
 
 
 $.fn.progressReader = ( options ) ->

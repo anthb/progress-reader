@@ -34,11 +34,27 @@
   };
 
   ProgressReader.prototype.scrollEvent = function(event) {
-    var currentPosition, progress, windowHeight;
+    var $window, currentWindowPosition, documentHeight, elementOffsetBottom, elementOffsetTop, progress, windowHeight;
+    $window = $(window);
     windowHeight = $(window).height();
-    currentPosition = event.data.$element.scrollTop();
-    progress = 100 * (currentPosition / (event.data.elementHeight - windowHeight));
-    return $('.progress-reader__info').html(progress);
+    documentHeight = $(document).height();
+    currentWindowPosition = $window.scrollTop();
+    elementOffsetTop = event.data.$element.offset().top;
+    elementOffsetBottom = elementOffsetTop + event.data.elementHeight;
+    console.log(currentWindowPosition);
+    console.log(elementOffsetTop);
+    console.log('bottom: ' + elementOffsetBottom);
+    console.log(event.data.elementHeight);
+    console.log(windowHeight);
+    console.log(documentHeight);
+    console.log(elementOffsetTop + event.data.elementHeight);
+    if (currentWindowPosition > elementOffsetTop) {
+      console.log(currentWindowPosition - elementOffsetTop);
+      console.log(elementOffsetBottom === documentHeight ? windowHeight : 0);
+      console.log(windowHeight);
+      progress = 100 * ((currentWindowPosition - elementOffsetTop) / (event.data.elementHeight - (elementOffsetBottom === documentHeight ? windowHeight : 0)));
+      return $('.progress-reader__info').html(progress);
+    }
   };
 
   $.fn.progressReader = function(options) {
