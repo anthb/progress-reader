@@ -28,32 +28,35 @@
   ProgressReader.prototype.init = function() {
     this.elementHeight = this.$element.height();
     return $(window).on('scroll.progressReader', {
+      current: this,
       $element: this.$element,
       elementHeight: this.elementHeight
     }, this.scrollEvent);
   };
 
   ProgressReader.prototype.scrollEvent = function(event) {
-    var $window, currentWindowPosition, documentHeight, elementOffsetBottom, elementOffsetTop, progress, windowHeight;
+    var $window, currentWindowPosition, documentHeight, elementOffsetBottom, elementOffsetTop, isElementAtBottom, isElementAtTop, length, progress, scrolled, windowHeight;
     $window = $(window);
     windowHeight = $(window).height();
     documentHeight = $(document).height();
     currentWindowPosition = $window.scrollTop();
     elementOffsetTop = event.data.$element.offset().top;
     elementOffsetBottom = elementOffsetTop + event.data.elementHeight;
-    console.log(currentWindowPosition);
-    console.log(elementOffsetTop);
-    console.log('bottom: ' + elementOffsetBottom);
-    console.log(event.data.elementHeight);
-    console.log(windowHeight);
-    console.log(documentHeight);
-    console.log(elementOffsetTop + event.data.elementHeight);
-    if (currentWindowPosition > elementOffsetTop) {
-      console.log(currentWindowPosition - elementOffsetTop);
-      console.log(elementOffsetBottom === documentHeight ? windowHeight : 0);
-      console.log(windowHeight);
-      progress = 100 * ((currentWindowPosition - elementOffsetTop) / (event.data.elementHeight - (elementOffsetBottom === documentHeight ? windowHeight : 0)));
+    isElementAtBottom = event.data.current.isElementAtBottom(elementOffsetBottom, documentHeight, windowHeight);
+    isElementAtTop = elementOffsetTop === 0 ? true : false;
+    scrolled = (currentWindowPosition + (isElementAtTop ? 0 : windowHeight)) - elementOffsetTop;
+    length = event.data.elementHeight - (isElementAtBottom ? windowHeight : 0);
+    progress = 100 * (scrolled / length);
+    if (progress >= 0 && progress <= 100) {
       return $('.progress-reader__info').html(progress);
+    }
+  };
+
+  ProgressReader.prototype.isElementAtBottom = function(elementOffsetBottom, documentHeight, windowHeight) {
+    if (elementOffsetBottom === documentHeight) {
+      return true;
+    } else {
+      return false;
     }
   };
 

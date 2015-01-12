@@ -31,43 +31,37 @@ ProgressReader::defaults =
 
 ProgressReader::init = ->
   @elementHeight = @$element.height()
-  $(window).on('scroll.progressReader', { 
+  $(window).on('scroll.progressReader', {
+      current: @, 
       $element: @$element,
       elementHeight: @elementHeight
     } ,@scrollEvent)
 
 ProgressReader::scrollEvent = ( event ) ->
   # event.data.elementHeight
-  $window = $(window)
-  windowHeight = $(window).height() # height of screen
-  documentHeight = $(document).height() # height of entire document
-
+  $window               = $(window)
+  windowHeight          = $(window).height() # height of screen
+  documentHeight        = $(document).height() # height of entire document
   currentWindowPosition = $window.scrollTop()
-  elementOffsetTop = event.data.$element.offset().top
-  elementOffsetBottom = elementOffsetTop + event.data.elementHeight
-  #currentWindowPosition = (event.data.$element.scrollTop())
+  elementOffsetTop      = event.data.$element.offset().top
+  elementOffsetBottom   = elementOffsetTop + event.data.elementHeight
 
-  console.log(currentWindowPosition)
-  console.log(elementOffsetTop)
-  console.log('bottom: ' + elementOffsetBottom)
-  console.log(event.data.elementHeight)
-  console.log(windowHeight)
-  console.log(documentHeight)
-  console.log(elementOffsetTop + event.data.elementHeight)
+  isElementAtBottom = event.data.current.isElementAtBottom(elementOffsetBottom, documentHeight, windowHeight)
+  isElementAtTop    = if elementOffsetTop == 0 then true else false
 
-  # Inside the range (not upper limit, just lower)
-  if currentWindowPosition > elementOffsetTop
+  # Progress Logic
+  scrolled = (currentWindowPosition + ( if isElementAtTop then 0 else windowHeight )) - elementOffsetTop
+  length = (event.data.elementHeight - ( if isElementAtBottom then windowHeight else 0 ))
 
-    console.log( currentWindowPosition - elementOffsetTop)
-    console.log( if elementOffsetBottom == documentHeight then windowHeight else 0)
-    console.log(windowHeight)
 
-    #progress = 100 * ((currentWindowPosition - event.data.elementHeight) / (event.data.elementHeight - windowHeight))
-    progress = (100 * ((currentWindowPosition - elementOffsetTop) / (event.data.elementHeight - ( if elementOffsetBottom == documentHeight then windowHeight else 0 ))))
-    #progress = 
+  progress = (100 * ( scrolled / length ))
+    #progress = ( 100 * scrolled / length )
+  if progress >= 0 && progress <= 100
     $('.progress-reader__info').html(progress)
   
 
+ProgressReader::isElementAtBottom = ( elementOffsetBottom, documentHeight, windowHeight ) ->
+  return if elementOffsetBottom == documentHeight then true else false
 
 $.fn.progressReader = ( options ) ->
   this.each ->
