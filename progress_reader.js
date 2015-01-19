@@ -1,15 +1,3 @@
-
-/* What's it doing? */
-
-
-/* Done by? */
-
-
-/* What do we need? */
-
-
-/* To Do */
-
 (function() {
   var ProgressReader;
 
@@ -49,6 +37,10 @@
     progress = 100 * (scrolled / length);
     if (progress >= 0 && progress <= 100) {
       return $('.progress-reader__info').html(progress);
+    } else if (progress < 0) {
+      return $('.progress-reader__info').html(0);
+    } else if (progress > 100) {
+      return $('.progress-reader__info').html(100);
     }
   };
 

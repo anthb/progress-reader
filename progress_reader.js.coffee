@@ -1,20 +1,6 @@
-### What's it doing? ###
-# Calculate area height.
-# Calculate the offset (where you are currently)
-# Work that out as a percentage
-# Display and constantly update this
-
-### Done by? ###
-# Hooking into the scroll event
-
-### What do we need? ###
-# An element to kick things off (body by default)
-# A progress element container to show and hide
-# A progress element that will be updated with percentage of page read
-# Make it AMD.
-
-### To Do ###
+# To Do #
 # Simple % text
+# Option to fade in the progress-reader__info
 # SVG animations
 # images and other stuff
 
@@ -38,7 +24,8 @@ ProgressReader::init = ->
     } ,@scrollEvent)
 
 ProgressReader::scrollEvent = ( event ) ->
-  # event.data.elementHeight
+  # Want to keep these variables declared inside the handler as the DOM may update and the values could change.
+
   $window               = $(window)
   windowHeight          = $(window).height() # height of screen
   documentHeight        = $(document).height() # height of entire document
@@ -58,6 +45,10 @@ ProgressReader::scrollEvent = ( event ) ->
     #progress = ( 100 * scrolled / length )
   if progress >= 0 && progress <= 100
     $('.progress-reader__info').html(progress)
+  else if progress < 0 # Scrolling can be faster than the tracked progress and will stop on a value higher than 0 (same for over 100)
+    $('.progress-reader__info').html(0)
+  else if progress > 100
+    $('.progress-reader__info').html(100)
   
 
 ProgressReader::isElementAtBottom = ( elementOffsetBottom, documentHeight, windowHeight ) ->
